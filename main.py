@@ -51,13 +51,13 @@ def graphBuilder(size):
     return table
 
 
-def bowBuilder(graph,size):
+def bowBuilder(graph, size):
     while True:
         x = random.randint(0, size - 1)
         y = random.randint(0, size - 1)
         if x != y:
             if graph[x][y] == 0:
-                newBow = [x, y, random.randint(0,100)]
+                newBow = [x, y, random.randint(0, 100)]
                 break
     return newBow
 
@@ -75,7 +75,7 @@ def question2(graph, size, newBow):
                     if graph[0][r] == 0:
                         count += 1
                 if count == (size - 1):
-                    graph[newBow[0]][newBow[1]] =0
+                    graph[newBow[0]][newBow[1]] = 0
                     break
             graph[i][newBow[1]] = 0
             break
@@ -87,13 +87,18 @@ def question2(graph, size, newBow):
 
     return graph
 
-def graphPrinter(graph,size):
+
+def graphPrinter(graph, size):
     for i in range(size):
-        print("["),
+        print("[", end=""),
         for j in range(size):
-            print (str(graph[i][j]) + ","),
-        print("]")
-    print("############################################################################################################")
+            if j == size-1:
+                print(str(graph[i][j]), end="")
+            else:
+                print(str(graph[i][j]) + ",", end=""),
+        print("]"),
+    print(
+        "_________________________________________________________________________________________")
 
 
 #####################################################################
@@ -101,13 +106,20 @@ def graphPrinter(graph,size):
 SizeOfGraph = random.randint(20, 30)
 # creating graph by adjacency matrix method
 G = randomTable(graphBuilder(SizeOfGraph), SizeOfGraph)
-graphPrinter(G,SizeOfGraph)
-# print(G)
-print(question1(G, SizeOfGraph))
-MST = question1(G, SizeOfGraph)
 
+print("This is the first graph:")
+graphPrinter(G, SizeOfGraph)
+# print(G)
+
+print("This is the MST graph:")
+graphPrinter(question1(G, SizeOfGraph),SizeOfGraph)
+
+MST = question1(G, SizeOfGraph)
 newBow1 = bowBuilder(MST, SizeOfGraph)
 
-
-print(question2(MST,SizeOfGraph, newBow1))
+print("This is the new vertex:")
 print(newBow1)
+print("_________________________________________________________________________________________")
+print("This is the new MST graph, after we added the new vertex:")
+
+graphPrinter(question2(MST, SizeOfGraph, newBow1),SizeOfGraph)
