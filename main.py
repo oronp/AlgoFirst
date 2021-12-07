@@ -1,5 +1,8 @@
-import random
+#Nir varsanno 216727489
+#Idan Zafrani 316061100
 
+
+import random
 
 def question1(graph, size):
     # Prim's Algorithm in Python
@@ -57,7 +60,7 @@ def bowBuilder(graph, size):
         y = random.randint(0, size - 1)
         if x != y:
             if graph[x][y] == 0:
-                newBow = [x, y, random.randint(0, 100)]
+                newBow = [x, y, random.randint(1, 3)]
                 break
     return newBow
 
