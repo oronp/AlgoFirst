@@ -10,9 +10,8 @@ def question1(graph, size):
     MST = graphBuilder(size)
     INF = 9999999
     selected_node = [0] * size
-    no_edge = 0
     selected_node[0] = True
-
+    no_edge = 0
     while no_edge < size - 1:
 
         minimum = INF
@@ -71,14 +70,49 @@ def bowBuilder(graph, size):
 
 def question2(graph, size, newBow):
 
+    maxNum = 999999
     nodes = [0] * size
-    # start = newBow[0], end = newBow[1],  weight = newBow[2]
     graph[newBow[0]][newBow[1]] = newBow[2]
-    list = LinkedList()
+    graph[newBow[1]][newBow[0]] = newBow[2]
+    graphPrinter(graph,size)
+    path1 = DFS2D(graph,size,newBow[0],newBow[1])
+    path2 = DFS2D(graph,size,newBow[1],newBow[0])
+    finalPath = []
+    for element in path1:
+        if element in path2:
+            finalPath.append(element)
+    print(finalPath)
+    while finalPath:
+        i = finalPath.pop()
+        for j in range(size):
 
 
 
+# אנחנו עוברים רק על השורות שמופיעות ב״דרך״ ובשורות הללו נמצא את המספר המקסימלי (נעבור רק על החצי העליון הימני של המטריצה כדי לחסוך יעילות)
+#כל הזכויות שמורות לעידן ואורון ואמן שאלון וניר יידרסו על ידי קורקינט חשמלי שזה מוות משפיל אחושרמוטה (אמן שהקורקינט יהיה רום שירכיב את מנשרי והוא יעשה לניר פייפר קאט כי הוא וקטור)
 
+def DFS2D(graph,size,startPoint,endPoint):
+    stack = []
+    path = []
+    access = False
+    stack.append(startPoint)
+    while stack:
+        current = stack.pop()
+        if current in path:
+            continue
+        path.append(current)
+        if access and graph[current][endPoint] != 0:
+            path.append(endPoint)
+            return path
+        for neighbor in range(size):
+            if graph[current][neighbor] != 0 and neighbor != endPoint:
+                stack.append(neighbor)
+
+        access = True
+    return path
+
+# לא להכניס את הנקודת סיום על ההתניה הראשונה
+# אם הכנסו את הנקודת סיום אז אנחנו יוצאים ומחזירים את הדרך הנוכחית
 
 
 def graphPrinter(graph, size):
@@ -88,7 +122,7 @@ def graphPrinter(graph, size):
             if j == size-1:
                 print(str(graph[i][j]), end="")
             else:
-                print(str(graph[i][j]) + ",", end=""),
+                print(str(graph[i][j]) + " , ", end=""),
         print("]"),
     print(
         "_________________________________________________________________________________________")
@@ -115,30 +149,6 @@ print(newBow1)
 print("_________________________________________________________________________________________")
 print("This is the new MST graph, after we added the new vertex:")
 
-graphPrinter(question2(MST, SizeOfGraph, newBow1),SizeOfGraph)
+question2(MST,SizeOfGraph,newBow1)
 
-
-class Node:
-    def __init__(self, number):
-        self.data = number
-        self.next = []
-        self.tail = []
-
-class Bow:
-    value = 0
-    where = Node
-    to = Node
-
-    def __init__(self,value,where,to):
-        self.value = value
-        self.where = where
-        self.to = to
-
-class Graph:
-    Node = []
-    Bow = []
-
-    def __init__(self,):
-        Node = []
-        Bow = []
-
+# graphPrinter(question2(MST, SizeOfGraph, newBow1),SizeOfGraph)
