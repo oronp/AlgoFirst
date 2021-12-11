@@ -26,6 +26,7 @@ def question1(graph, size):
                             b = n
         # print(str(a) + "-" + str(b) + ":" + str(graph[a][b]))
         MST[a][b] = graph[a][b]
+        MST[b][a] = graph[a][b]
         selected_node[b] = True
         no_edge += 1
     return MST
@@ -34,7 +35,10 @@ def question1(graph, size):
 def randomTable(graph, size):
     for i in range(size):
         for j in range(size):
-            graph[i][j] = random.randint(0, 100)
+            x = random.randint(0,100)
+            graph[i][j] = x;
+            graph[j][i] = x;
+            # graph[i][j] = random.randint(0, 100)
     for i in range(size):
         graph[i][i] = 0
     return graph
@@ -57,35 +61,21 @@ def bowBuilder(graph, size):
         y = random.randint(0, size - 1)
         if x != y:
             if graph[x][y] == 0:
-                newBow = [x, y, random.randint(0, 100)]
+                newBow = [x, y, random.randint(1, 3)]
                 break
     return newBow
 
 
 def question2(graph, size, newBow):
+
+    nodes = [0] * size
+    # start = newBow[0], end = newBow[1],  weight = newBow[2]
     graph[newBow[0]][newBow[1]] = newBow[2]
-    i = 0
-    count = 0
+    list = LinkedList()
 
-    while True:
 
-        if graph[i][newBow[1]] > newBow[2]:
-            if i == 0:
-                for r in range(size):
-                    if graph[0][r] == 0:
-                        count += 1
-                if count == (size - 1):
-                    graph[newBow[0]][newBow[1]] = 0
-                    break
-            graph[i][newBow[1]] = 0
-            break
-        elif graph[i][newBow[1]] <= newBow[2] and graph[i][newBow[1]] != 0:
-            graph[newBow[0]][newBow[1]] = 0
-            break
-        elif graph[i][newBow[1]] == 0:
-            i += 1
 
-    return graph
+
 
 
 def graphPrinter(graph, size):
@@ -103,7 +93,7 @@ def graphPrinter(graph, size):
 
 #####################################################################
 # number of vertices in graph
-SizeOfGraph = random.randint(20, 30)
+SizeOfGraph = random.randint(4, 5)
 # creating graph by adjacency matrix method
 G = randomTable(graphBuilder(SizeOfGraph), SizeOfGraph)
 
@@ -123,3 +113,29 @@ print("_________________________________________________________________________
 print("This is the new MST graph, after we added the new vertex:")
 
 graphPrinter(question2(MST, SizeOfGraph, newBow1),SizeOfGraph)
+
+
+class Node:
+    def __init__(self, number):
+        self.data = number
+        self.next = []
+        self.tail = []
+
+class Bow:
+    value = 0
+    where = Node
+    to = Node
+
+    def __init__(self,value,where,to):
+        self.value = value
+        self.where = where
+        self.to = to
+
+class Graph:
+    Node = []
+    Bow = []
+
+    def __init__(self,):
+        Node = []
+        Bow = []
+
