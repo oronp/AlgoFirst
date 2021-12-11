@@ -1,5 +1,8 @@
-import random
+#Nir varsanno 216727489
+#Idan Zafrani 316061100
 
+
+import random
 
 def question1(graph, size):
     # Prim's Algorithm in Python
