@@ -1,5 +1,7 @@
 #Nir varsanno 216727489
 #Idan Zafrani 316061100
+#Oron Pariente 315826990
+#Alon Peslin 318795671
 
 
 import random
@@ -63,33 +65,37 @@ def bowBuilder(graph, size):
         y = random.randint(0, size - 1)
         if x != y:
             if graph[x][y] == 0:
-                newBow = [x, y, random.randint(1, 3)]
+                newBow = [x, y, random.randint(50, 100)]
                 break
     return newBow
 
 
 def question2(graph, size, newBow):
 
-    maxNum = 999999
-    nodes = [0] * size
+    max = [0,0,0] #this will be the [value,where,to] of the bow will be deleted.
     graph[newBow[0]][newBow[1]] = newBow[2]
     graph[newBow[1]][newBow[0]] = newBow[2]
     graphPrinter(graph,size)
-    path1 = DFS2D(graph,size,newBow[0],newBow[1])
-    path2 = DFS2D(graph,size,newBow[1],newBow[0])
+    path1 = DFS2D(graph,size,newBow[0],newBow[1]) #finds the path from the start to the end.
+    path2 = DFS2D(graph,size,newBow[1],newBow[0]) #finds the path from the end to the start.
     finalPath = []
     for element in path1:
         if element in path2:
-            finalPath.append(element)
+            finalPath.append(element) #find the circle (the nodes that exist in both pathes).
     print(finalPath)
-    while finalPath:
-        i = finalPath.pop()
-        for j in range(size):
+    for i in range(1,size): #rows
+        j = 0
+        while j < i:
+            if graph[i][j] > max[0] and i in finalPath and j in finalPath:
+                max[0] = graph[i][j]
+                max[1] = i
+                max[2] = j
+            j+=1
+    graph[max[1]][max[2]] = 0
+    graph[max[2]][max[1]] = 0
+    print("This is the MST graph after deleting the unnecessary vertex")
+    graphPrinter(graph,size)
 
-
-
-# אנחנו עוברים רק על השורות שמופיעות ב״דרך״ ובשורות הללו נמצא את המספר המקסימלי (נעבור רק על החצי העליון הימני של המטריצה כדי לחסוך יעילות)
-#כל הזכויות שמורות לעידן ואורון ואמן שאלון וניר יידרסו על ידי קורקינט חשמלי שזה מוות משפיל אחושרמוטה (אמן שהקורקינט יהיה רום שירכיב את מנשרי והוא יעשה לניר פייפר קאט כי הוא וקטור)
 
 def DFS2D(graph,size,startPoint,endPoint):
     stack = []
@@ -107,12 +113,8 @@ def DFS2D(graph,size,startPoint,endPoint):
         for neighbor in range(size):
             if graph[current][neighbor] != 0 and neighbor != endPoint:
                 stack.append(neighbor)
-
         access = True
     return path
-
-# לא להכניס את הנקודת סיום על ההתניה הראשונה
-# אם הכנסו את הנקודת סיום אז אנחנו יוצאים ומחזירים את הדרך הנוכחית
 
 
 def graphPrinter(graph, size):
@@ -122,7 +124,7 @@ def graphPrinter(graph, size):
             if j == size-1:
                 print(str(graph[i][j]), end="")
             else:
-                print(str(graph[i][j]) + " , ", end=""),
+                print(str(graph[i][j]) + "  ,  ", end=""),
         print("]"),
     print(
         "_________________________________________________________________________________________")
@@ -130,7 +132,7 @@ def graphPrinter(graph, size):
 
 #####################################################################
 # number of vertices in graph
-SizeOfGraph = random.randint(4, 5)
+SizeOfGraph = random.randint(6, 7)
 # creating graph by adjacency matrix method
 G = randomTable(graphBuilder(SizeOfGraph), SizeOfGraph)
 
